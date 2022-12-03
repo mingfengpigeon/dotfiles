@@ -14,7 +14,7 @@ GREEN=$(tput setaf 2)
 BLUE=$(tput setaf 4)
 CYAN=$(tput setaf 6)
 
-install_zsh() {
+configure_zsh() {
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install zsh and fzf ...${RST}"
     apt install -y zsh fzf
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Make directory ...${RST}"
@@ -29,10 +29,12 @@ install_zsh() {
     exec zsh
 }
 
-install_neovim() {
-    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install neovim, ctags and nodejs ...${RST}"
-    apt install -y neovim ctags nodejs
-    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install vim-plug ...${RST}"
+configure_neovim() {
+    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install neovim, ctags, python and nodejs ...${RST}"
+    apt install -y neovim ctags python nodejs
+    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install pynvim."
+    pip install pynvim
+    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Instal vim-plug ...${RST}"
     curl --fail --output "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Download the config file for Neovim ...${RST}"
     curl --fail --output "${NVIM_CONF_FILE}" --create-dirs https://raw.githubusercontent.com/mingfengpigeon/dotfiles/main/neovim.vim
@@ -40,7 +42,7 @@ install_neovim() {
     nvim +PlugInstall +qa!
 }
 
-install_tmux() {
+configure_tmux() {
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install tmux ...${RST}"
     apt install -y tmux
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install oh my tmux ...${RST}"
@@ -52,10 +54,22 @@ install_tmux() {
 }
 
 main() {
-    install_zsh
-    install_neovim
-    install_tmux
+    while true; do
+        a=$(dialog --backtitle dotfiles --title "Installation guide" \
+            --menu "What do you want to configure?" 50 50 20 \
+            0 zsh \
+            1 neovim \
+            2 tmux \
+            3 a \
+            3>&1 1>&2 2>&3)
+        clear
+        case $a in
+        0) configure_zsh ;;
+        1) configure_neovim ;;
+        2) configure_tmux ;;
+        3) exit ;;
+        esac
+    done
 }
 
 main
-
