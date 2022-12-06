@@ -5,6 +5,7 @@ NVIM_CONF_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim/init.vim"
 TMUX_CONF_FILE="${HOME}/.tmux.conf"
 OMT_CONF_FILE="${HOME}/.tmux.conf.local"
 TERMUX_CONF_FILE="${HOME}/.termux/termux.properties"
+IPYTHON_CONF_FILE="${HOME}/.ipython/profile_default/ipython_config.py"
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 OMT_HOME="${HOME}/.tmux"
@@ -79,6 +80,9 @@ configure_ipython() {
     wget https://github.com/reillysiemens/ipython-style-gruvbox/releases/download/v1.0.0/ipython_style_gruvbox-1.0.0-py3-none-any.whl
     echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Install IPython Style Gruvbox${RST}"
     pip install ipython_style_gruvbox-1.0.0-py3-none-any.whl
+    echo "${BLUE}[${GREEN}*${BLUE}] ${CYAN}Download the config file of IPython ...${RST}"
+    curl -fo "${IPYTHON_CONF_FILE}" \
+        https://raw.githubusercontent.com/mingfengpigeon/dotfiles/main/ipython.py
 }
 
 
