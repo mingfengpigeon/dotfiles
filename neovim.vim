@@ -1,7 +1,9 @@
 filetype plugin on
 
-set number relativenumber
+set number
+" set relativenumber
 " set cursorline cursorcolumn
+set nowrap
 set autoindent expandtab tabstop=4 shiftwidth=4
 set nobackup nowritebackup
 
